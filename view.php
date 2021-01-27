@@ -53,11 +53,13 @@ $pageurl = new moodle_url('/mod/customcert/view.php', array('id' => $cm->id));
 
 // Check if the user can view the certificate based on time spent in course.
 if ($customcert->requiredtime && !$canmanage) {
-    if (\mod_customcert\certificate::get_course_time($course->id) < ($customcert->requiredtime * 60)) {
+    $totaltime = \mod_customcert\certificate::get_course_time($course->id);
+    if ($totaltime < ($customcert->requiredtime * 60)) {
         $a = new stdClass;
         $a->requiredtime = $customcert->requiredtime;
-        notice(get_string('requiredtimenotmet', 'customcert', $a), "$CFG->wwwroot/course/view.php?id=$course->id");
-        die;
+        $intervalAsText = 'Minuti totalizzati: '.round($totaltime/60);
+        $message = get_string('requiredtimenotmet', 'customcert', $a)."<br>$intervalAsText";
+        notice($message, "$CFG->wwwroot/course/view.php?id=$course->id");        die;
     }
 }
 
