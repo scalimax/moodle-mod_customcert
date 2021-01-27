@@ -217,7 +217,7 @@ class certificate {
                     $totaltime = 0;
                 }
                 $delay = $log->$timefield - $lasthit;
-                if ($delay > ($CFG->sessiontimeout * 60)) {
+                if ($delay > ($CFG->sessiontimeout)) { // * 60
                     // The difference between the last log and the current log is more than
                     // the timeout Register session value so that we have found a session!
                     $login = $log->$timefield;
